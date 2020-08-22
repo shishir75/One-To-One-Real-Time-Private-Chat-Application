@@ -26,16 +26,20 @@ class MessageController extends Controller
 
     public function user_message( $id )
     {
+        $user = User::findOrFail( $id );
         $messages = Message::where( function ( $q ) use ( $id ) {
             $q->where( 'from', auth()->user()->id );
             $q->where( 'to', $id );
         } )->orWhere( function ( $q ) use ( $id ) {
             $q->where( 'from', $id );
             $q->where( 'to', auth()->user()->id );
-        } )->get();
+        } )->with( 'user' )->get();
 
-        if ( !Request::ajax() ) {
-            return response()->json( $messages, 200 );
+        if ( Request::ajax() ) {
+            return response()->json( [
+                'messages' => $messages,
+                'user'     => $user,
+            ] );
         }
 
         return abort( 404 );
