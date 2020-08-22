@@ -22,3 +22,4 @@ Auth::routes();
 Route::get( '/home', 'HomeController@index' )->name( 'home' );
 
 Route::get( 'user-list', "MessageController@user_list" )->name( 'user.list' );
+Route::get( 'user-message/{id}', "MessageController@user_message" )->name( 'user.message' );

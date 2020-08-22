@@ -1,12 +1,18 @@
 import Axios from "axios";
 
+// Steps: Actions -> State -> Mutations  -> Getters
+
 export default {
     state: {
-        users: []
+        users: [],
+        messages: []
     },
     mutations: {
         userList(state, payload) {
             return (state.users = payload);
+        },
+        userMessage(state, payload) {
+            return (state.messages = payload);
         }
     },
     actions: {
@@ -14,11 +20,19 @@ export default {
             Axios.get("/user-list").then(response => {
                 context.commit("userList", response.data);
             });
+        },
+        userMessage(context, userId) {
+            Axios.get("/user-message/" + userId).then(response => {
+                context.commit("userMessage", response.data);
+            });
         }
     },
     getters: {
         userList(state) {
             return state.users;
+        },
+        userMessage(state) {
+            return state.messages;
         }
     }
 };

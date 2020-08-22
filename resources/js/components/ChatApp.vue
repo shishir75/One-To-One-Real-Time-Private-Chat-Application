@@ -7,7 +7,12 @@
                     <i class="fa fa-search"></i>
                 </div>
                 <ul class="list">
-                    <li class="clearfix" v-for="user in allUser" :key="user.id">
+                    <li
+                        class="clearfix"
+                        @click.prevent="selectUser(user.id)"
+                        v-for="user in allUser"
+                        :key="user.id"
+                    >
                         <img
                             src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg"
                             alt="avatar"
@@ -159,7 +164,11 @@ export default {
         }
     },
     created() {},
-    methods: {}
+    methods: {
+        selectUser(userId) {
+            this.$store.dispatch("userMessage", userId); // hit an actions
+        }
+    }
 };
 </script>
 

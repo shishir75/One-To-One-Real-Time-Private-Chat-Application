@@ -2055,6 +2055,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -2068,7 +2073,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {},
-  methods: {}
+  methods: {
+    selectUser: function selectUser(userId) {
+      this.$store.dispatch("userMessage", userId); // hit an actions
+    }
+  }
 });
 
 /***/ }),
@@ -37692,21 +37701,36 @@ var render = function() {
           "ul",
           { staticClass: "list" },
           _vm._l(_vm.allUser, function(user) {
-            return _c("li", { key: user.id, staticClass: "clearfix" }, [
-              _c("img", {
-                attrs: {
-                  src:
-                    "https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg",
-                  alt: "avatar"
+            return _c(
+              "li",
+              {
+                key: user.id,
+                staticClass: "clearfix",
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.selectUser(user.id)
+                  }
                 }
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "about" }, [
-                _c("div", { staticClass: "name" }, [_vm._v(_vm._s(user.name))]),
+              },
+              [
+                _c("img", {
+                  attrs: {
+                    src:
+                      "https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg",
+                    alt: "avatar"
+                  }
+                }),
                 _vm._v(" "),
-                _vm._m(1, true)
-              ])
-            ])
+                _c("div", { staticClass: "about" }, [
+                  _c("div", { staticClass: "name" }, [
+                    _vm._v(_vm._s(user.name))
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(1, true)
+                ])
+              ]
+            )
           }),
           0
         )
@@ -51568,14 +51592,19 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+ // Steps: Actions -> State -> Mutations  -> Getters
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   state: {
-    users: []
+    users: [],
+    messages: []
   },
   mutations: {
     userList: function userList(state, payload) {
       return state.users = payload;
+    },
+    userMessage: function userMessage(state, payload) {
+      return state.messages = payload;
     }
   },
   actions: {
@@ -51583,11 +51612,19 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/user-list").then(function (response) {
         context.commit("userList", response.data);
       });
+    },
+    userMessage: function userMessage(context, userId) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/user-message/" + userId).then(function (response) {
+        context.commit("userMessage", response.data);
+      });
     }
   },
   getters: {
     userList: function userList(state) {
       return state.users;
+    },
+    userMessage: function userMessage(state) {
+      return state.messages;
     }
   }
 });

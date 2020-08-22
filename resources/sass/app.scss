@@ -37,12 +37,6 @@ body {
     width: 260px;
     float: left;
 
-    ul {
-        li {
-            list-style: none;
-        }
-    }
-
     .search {
         padding: 20px;
     }
@@ -68,6 +62,8 @@ body {
 
         li {
             padding-bottom: 20px;
+            list-style: none;
+            cursor: pointer;
         }
     }
 
