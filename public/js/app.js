@@ -1992,22 +1992,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -58893,17 +58877,20 @@ var render = function() {
               _c("div", { staticClass: "chat-about" }, [
                 _vm.userMessages.user
                   ? _c("div", { staticClass: "chat-with" }, [
-                      _vm._v(
-                        "\n                        Chat with " +
-                          _vm._s(_vm.userMessages.user.name) +
-                          "\n                    "
-                      )
+                      _vm._v("Chat with " + _vm._s(_vm.userMessages.user.name))
                     ])
                   : _vm._e(),
                 _vm._v(" "),
                 _c("div", { staticClass: "chat-num-messages" }, [
                   _vm._v(
-                    "\n                        already 1 902 messages\n                    "
+                    "already " +
+                      _vm._s(_vm.userMessages.messages.length) +
+                      " " +
+                      _vm._s(
+                        _vm.userMessages.messages.length > 1
+                          ? "messages"
+                          : "message"
+                      )
                   )
                 ])
               ]),
@@ -58925,9 +58912,7 @@ var render = function() {
                             _vm._s(_vm._f("timeFormat")(message.created_at))
                           )
                         ]),
-                        _vm._v(
-                          "\n                               \n                            "
-                        ),
+                        _vm._v("\n                 \n              "),
                         _c("span", { staticClass: "message-data-name" }, [
                           _vm._v(_vm._s(message.user.name))
                         ]),
@@ -58944,13 +58929,7 @@ var render = function() {
                               ? "other-message"
                               : "my-message"
                         },
-                        [
-                          _vm._v(
-                            "\n                            " +
-                              _vm._s(message.message) +
-                              "\n                        "
-                          )
-                        ]
+                        [_vm._v(_vm._s(message.message))]
                       )
                     ]
                   )
@@ -58982,7 +58961,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "status" }, [
       _c("i", { staticClass: "fa fa-circle online" }),
-      _vm._v(" online\n                        ")
+      _vm._v(" online\n            ")
     ])
   },
   function() {
@@ -59000,7 +58979,7 @@ var staticRenderFns = [
       }),
       _vm._v(" "),
       _c("i", { staticClass: "fa fa-file-o" }),
-      _vm._v("    \n                "),
+      _vm._v("    \n        "),
       _c("i", { staticClass: "fa fa-file-image-o" }),
       _vm._v(" "),
       _c("button", [_vm._v("Send")])
