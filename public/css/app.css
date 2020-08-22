@@ -10950,6 +10950,7 @@ body {
 .people-list ul {
   padding: 20px;
   height: 770px;
+  overflow-y: scroll;
 }
 
 .people-list ul li {

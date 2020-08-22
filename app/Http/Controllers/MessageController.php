@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SendMessageRequest;
 use App\Message;
 use App\User;
 use Illuminate\Support\Facades\Request;
@@ -30,9 +31,11 @@ class MessageController extends Controller
         $messages = Message::where( function ( $q ) use ( $id ) {
             $q->where( 'from', auth()->user()->id );
             $q->where( 'to', $id );
+            $q->where( 'type', 0 );
         } )->orWhere( function ( $q ) use ( $id ) {
             $q->where( 'from', $id );
             $q->where( 'to', auth()->user()->id );
+            $q->where( 'type', 1 );
         } )->with( 'user' )->get();
 
         if ( Request::ajax() ) {
@@ -43,5 +46,28 @@ class MessageController extends Controller
         }
 
         return abort( 404 );
+    }
+
+    public function send_message( SendMessageRequest $request )
+    {
+        if ( !Request::ajax() ) {
+            return abort( 404 );
+        }
+
+        $messages = Message::create( [
+            'message' => $request->message,
+            'from'    => auth()->user()->id,
+            'to'      => $request->user_id,
+            'type'    => false,
+        ] );
+
+        $messages = Message::create( [
+            'message' => $request->message,
+            'from'    => auth()->user()->id,
+            'to'      => $request->user_id,
+            'type'    => true,
+        ] );
+
+        return response()->json( $messages, 201 );
     }
 }
