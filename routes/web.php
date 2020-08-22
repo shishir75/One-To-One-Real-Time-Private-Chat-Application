@@ -24,3 +24,4 @@ Route::get( '/home', 'HomeController@index' )->name( 'home' );
 Route::get( 'user-list', "MessageController@user_list" )->name( 'user.list' );
 Route::get( 'user-message/{id}', "MessageController@user_message" )->name( 'user.message' );
 Route::post( 'send-message', "MessageController@send_message" )->name( 'send.message' );
+Route::get( 'delete-single-message/{id}', "MessageController@delete_single_message" )->name( 'delete_single_message' );

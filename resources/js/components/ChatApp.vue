@@ -46,6 +46,24 @@
                             }}
                         </div>
                     </div>
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item dropdown">
+                            <a
+                                class="nav-link dropdown-toggle"
+                                data-toggle="dropdown"
+                                href="#"
+                                role="button"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                                >...</a
+                            >
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#"
+                                    >Delete All Messages</a
+                                >
+                            </div>
+                        </li>
+                    </ul>
                     <i class="fa fa-star"></i>
                 </div>
                 <!-- end chat-header -->
@@ -65,6 +83,31 @@
                                 <span class="message-data-name">{{
                                     message.user.name
                                 }}</span>
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item dropdown">
+                                        <a
+                                            class="nav-link dropdown-toggle"
+                                            data-toggle="dropdown"
+                                            href="#"
+                                            role="button"
+                                            aria-haspopup="true"
+                                            aria-expanded="false"
+                                            >...</a
+                                        >
+                                        <div class="dropdown-menu">
+                                            <a
+                                                @click.prevent="
+                                                    deleteSingleMessage(
+                                                        message.id
+                                                    )
+                                                "
+                                                class="dropdown-item"
+                                                href="#"
+                                                >Delete Message</a
+                                            >
+                                        </div>
+                                    </li>
+                                </ul>
                                 <i class="fa fa-circle me"></i>
                             </div>
                             <div
@@ -141,6 +184,11 @@ export default {
                         this.message = "";
                     });
             }
+        },
+        deleteSingleMessage(message_id) {
+            axios.get(`/delete-single-message/${message_id}`).then(response => {
+                this.selectUser(this.userMessages.user.id);
+            });
         }
     }
 };

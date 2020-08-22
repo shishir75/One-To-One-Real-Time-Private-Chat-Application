@@ -2015,6 +2015,49 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2052,6 +2095,13 @@ __webpack_require__.r(__webpack_exports__);
           _this.message = "";
         });
       }
+    },
+    deleteSingleMessage: function deleteSingleMessage(message_id) {
+      var _this2 = this;
+
+      axios.get("/delete-single-message/".concat(message_id)).then(function (response) {
+        _this2.selectUser(_this2.userMessages.user.id);
+      });
     }
   }
 });
@@ -59035,6 +59085,8 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
+              _vm._m(2),
+              _vm._v(" "),
               _c("i", { staticClass: "fa fa-star" })
             ]),
             _vm._v(" "),
@@ -59063,6 +59115,44 @@ var render = function() {
                           ),
                           _c("span", { staticClass: "message-data-name" }, [
                             _vm._v(_vm._s(message.user.name))
+                          ]),
+                          _vm._v(" "),
+                          _c("ul", { staticClass: "nav nav-tabs" }, [
+                            _c("li", { staticClass: "nav-item dropdown" }, [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "nav-link dropdown-toggle",
+                                  attrs: {
+                                    "data-toggle": "dropdown",
+                                    href: "#",
+                                    role: "button",
+                                    "aria-haspopup": "true",
+                                    "aria-expanded": "false"
+                                  }
+                                },
+                                [_vm._v("...")]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "dropdown-menu" }, [
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "dropdown-item",
+                                    attrs: { href: "#" },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.deleteSingleMessage(
+                                          message.id
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Delete Message")]
+                                )
+                              ])
+                            ])
                           ]),
                           _vm._v(" "),
                           _c("i", { staticClass: "fa fa-circle me" })
@@ -59158,6 +59248,35 @@ var staticRenderFns = [
     return _c("div", { staticClass: "status" }, [
       _c("i", { staticClass: "fa fa-circle online" }),
       _vm._v(" online\n                        ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "nav nav-tabs" }, [
+      _c("li", { staticClass: "nav-item dropdown" }, [
+        _c(
+          "a",
+          {
+            staticClass: "nav-link dropdown-toggle",
+            attrs: {
+              "data-toggle": "dropdown",
+              href: "#",
+              role: "button",
+              "aria-haspopup": "true",
+              "aria-expanded": "false"
+            }
+          },
+          [_vm._v("...")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "dropdown-menu" }, [
+          _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+            _vm._v("Delete All Messages")
+          ])
+        ])
+      ])
     ])
   }
 ]
