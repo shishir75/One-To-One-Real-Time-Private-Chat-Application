@@ -28,15 +28,7 @@ class MessageController extends Controller
     public function user_message( $id )
     {
         $user = User::findOrFail( $id );
-        $messages = Message::where( function ( $q ) use ( $id ) {
-            $q->where( 'from', auth()->user()->id );
-            $q->where( 'to', $id );
-            $q->where( 'type', 0 );
-        } )->orWhere( function ( $q ) use ( $id ) {
-            $q->where( 'from', $id );
-            $q->where( 'to', auth()->user()->id );
-            $q->where( 'type', 1 );
-        } )->with( 'user' )->get();
+        $messages = $this->message_by_user_id( $id );
 
         if ( Request::ajax() ) {
             return response()->json( [
@@ -79,5 +71,34 @@ class MessageController extends Controller
         Message::findOrFail( $message_id )->delete();
 
         return response( 'Deleted', 200 );
+    }
+
+    public function delete_all_message( $id )
+    {
+        if ( !Request::ajax() ) {
+            return abort( 404 );
+        }
+        $messages = $this->message_by_user_id( $id );
+        foreach ( $messages as $message ) {
+            Message::findOrFail( $message->id )->delete();
+        }
+
+        return response()->json( 'All Message Deleted', 200 );
+
+    }
+
+    public function message_by_user_id( $id )
+    {
+        $messages = Message::where( function ( $q ) use ( $id ) {
+            $q->where( 'from', auth()->user()->id );
+            $q->where( 'to', $id );
+            $q->where( 'type', 0 );
+        } )->orWhere( function ( $q ) use ( $id ) {
+            $q->where( 'from', $id );
+            $q->where( 'to', auth()->user()->id );
+            $q->where( 'type', 1 );
+        } )->with( 'user' )->get();
+
+        return $messages;
     }
 }

@@ -58,7 +58,10 @@
                                 >...</a
                             >
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#"
+                                <a
+                                    class="dropdown-item"
+                                    href="#"
+                                    @click.prevent="deleteAllMessage"
                                     >Delete All Messages</a
                                 >
                             </div>
@@ -76,13 +79,13 @@
                             :key="message.id"
                         >
                             <div class="message-data align-right">
-                                <span class="message-data-time">{{
-                                    message.created_at | timeFormat
-                                }}</span>
+                                <span class="message-data-time">
+                                    {{ message.created_at | timeFormat }}
+                                </span>
                                 &nbsp; &nbsp;
-                                <span class="message-data-name">{{
-                                    message.user.name
-                                }}</span>
+                                <span class="message-data-name">
+                                    {{ message.user.name }}
+                                </span>
                                 <ul class="nav nav-tabs">
                                     <li class="nav-item dropdown">
                                         <a
@@ -189,6 +192,13 @@ export default {
             axios.get(`/delete-single-message/${message_id}`).then(response => {
                 this.selectUser(this.userMessages.user.id);
             });
+        },
+        deleteAllMessage() {
+            axios
+                .get(`/delete-all-message/${this.userMessages.user.id}`)
+                .then(response => {
+                    this.selectUser(this.userMessages.user.id);
+                });
         }
     }
 };
