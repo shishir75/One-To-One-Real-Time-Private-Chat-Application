@@ -129,6 +129,7 @@
                 <!-- end chat-history -->
 
                 <div class="chat-message clearfix">
+                    <p v-if="typing">{{ typing }} is typing....</p>
                     <textarea
                         v-model="message"
                         name="message-to-send"
@@ -136,6 +137,7 @@
                         placeholder="Type your message"
                         rows="3"
                         @keydown.enter="sendMessage"
+                        @keydown="typingEvent(userMessages.user.id)"
                     ></textarea>
 
                     <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp;
@@ -155,16 +157,31 @@
 export default {
     data() {
         return {
-            message: ""
+            message: "",
+            typing: ""
         };
     },
     mounted() {
+        this.$store.dispatch("userList"); // make an actions
+
         // auth_user comes from app.blade.php files scrept
         Echo.private(`chat.${auth_user.id}`).listen("MessageSendEvent", e => {
             this.selectUser(e.messages.from);
             // console.log(e);
         });
-        this.$store.dispatch("userList"); // hit an actions
+
+        Echo.private("typing_event").listenForWhisper("typing", e => {
+            // This check is very important
+            if (
+                e.user.id === this.userMessages.user.id &&
+                e.userId === auth_user.id
+            ) {
+                this.typing = e.user.name;
+                setTimeout(() => {
+                    this.typing = "";
+                }, 3000);
+            }
+        });
     },
     computed: {
         allUser() {
@@ -177,7 +194,8 @@ export default {
     created() {},
     methods: {
         selectUser(userId) {
-            this.$store.dispatch("userMessage", userId); // hit an actions
+            this.message = "";
+            this.$store.dispatch("userMessage", userId); // make an actions
         },
         sendMessage(e) {
             e.preventDefault();
@@ -204,6 +222,13 @@ export default {
                 .then(response => {
                     this.selectUser(this.userMessages.user.id);
                 });
+        },
+        typingEvent(userId) {
+            Echo.private("typing_event").whisper("typing", {
+                user: auth_user,
+                typing: this.message,
+                userId: userId
+            });
         }
     }
 };

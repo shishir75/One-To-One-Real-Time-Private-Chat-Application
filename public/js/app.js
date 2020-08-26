@@ -2061,21 +2061,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      message: ""
+      message: "",
+      typing: ""
     };
   },
   mounted: function mounted() {
     var _this = this;
 
+    this.$store.dispatch("userList"); // make an actions
     // auth_user comes from app.blade.php files scrept
+
     Echo["private"]("chat.".concat(auth_user.id)).listen("MessageSendEvent", function (e) {
       _this.selectUser(e.messages.from); // console.log(e);
 
     });
-    this.$store.dispatch("userList"); // hit an actions
+    Echo["private"]("typing_event").listenForWhisper("typing", function (e) {
+      // This check is very important
+      if (e.user.id === _this.userMessages.user.id && e.userId === auth_user.id) {
+        _this.typing = e.user.name;
+        setTimeout(function () {
+          _this.typing = "";
+        }, 3000);
+      }
+    });
   },
   computed: {
     allUser: function allUser() {
@@ -2088,7 +2101,8 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {},
   methods: {
     selectUser: function selectUser(userId) {
-      this.$store.dispatch("userMessage", userId); // hit an actions
+      this.message = "";
+      this.$store.dispatch("userMessage", userId); // make an actions
     },
     sendMessage: function sendMessage(e) {
       var _this2 = this;
@@ -2118,6 +2132,13 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("/delete-all-message/".concat(this.userMessages.user.id)).then(function (response) {
         _this4.selectUser(_this4.userMessages.user.id);
+      });
+    },
+    typingEvent: function typingEvent(userId) {
+      Echo["private"]("typing_event").whisper("typing", {
+        user: auth_user,
+        typing: this.message,
+        userId: userId
       });
     }
   }
@@ -65311,6 +65332,10 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", { staticClass: "chat-message clearfix" }, [
+              _vm.typing
+                ? _c("p", [_vm._v(_vm._s(_vm.typing) + " is typing....")])
+                : _vm._e(),
+              _vm._v(" "),
               _c("textarea", {
                 directives: [
                   {
@@ -65328,15 +65353,20 @@ var render = function() {
                 },
                 domProps: { value: _vm.message },
                 on: {
-                  keydown: function($event) {
-                    if (
-                      !$event.type.indexOf("key") &&
-                      _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                    ) {
-                      return null
+                  keydown: [
+                    function($event) {
+                      if (
+                        !$event.type.indexOf("key") &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                      ) {
+                        return null
+                      }
+                      return _vm.sendMessage($event)
+                    },
+                    function($event) {
+                      return _vm.typingEvent(_vm.userMessages.user.id)
                     }
-                    return _vm.sendMessage($event)
-                  },
+                  ],
                   input: function($event) {
                     if ($event.target.composing) {
                       return
