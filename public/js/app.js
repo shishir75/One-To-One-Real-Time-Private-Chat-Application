@@ -1908,6 +1908,8 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -2063,11 +2065,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       message: "",
-      typing: ""
+      typing: "",
+      users: []
     };
   },
   mounted: function mounted() {
@@ -2098,14 +2107,24 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters.userMessage;
     }
   },
-  created: function created() {},
+  created: function created() {
+    var _this2 = this;
+
+    Echo.join("live-status").here(function (users) {
+      _this2.users = users;
+    }).joining(function (user) {
+      _this2.users.push(user);
+    }).leaving(function (user) {
+      _this2.users.pop(user);
+    });
+  },
   methods: {
     selectUser: function selectUser(userId) {
       this.message = "";
       this.$store.dispatch("userMessage", userId); // make an actions
     },
     sendMessage: function sendMessage(e) {
-      var _this2 = this;
+      var _this3 = this;
 
       e.preventDefault();
 
@@ -2114,24 +2133,24 @@ __webpack_require__.r(__webpack_exports__);
           message: this.message,
           user_id: this.userMessages.user.id
         }).then(function (response) {
-          _this2.selectUser(_this2.userMessages.user.id);
+          _this3.selectUser(_this3.userMessages.user.id);
 
-          _this2.message = "";
+          _this3.message = "";
         });
       }
     },
     deleteSingleMessage: function deleteSingleMessage(message_id) {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get("/delete-single-message/".concat(message_id)).then(function (response) {
-        _this3.selectUser(_this3.userMessages.user.id);
+        _this4.selectUser(_this4.userMessages.user.id);
       });
     },
     deleteAllMessage: function deleteAllMessage() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get("/delete-all-message/".concat(this.userMessages.user.id)).then(function (response) {
-        _this4.selectUser(_this4.userMessages.user.id);
+        _this5.selectUser(_this5.userMessages.user.id);
       });
     },
     typingEvent: function typingEvent(userId) {
@@ -2139,6 +2158,11 @@ __webpack_require__.r(__webpack_exports__);
         user: auth_user,
         typing: this.message,
         userId: userId
+      });
+    },
+    onlineUser: function onlineUser(userId) {
+      return lodash__WEBPACK_IMPORTED_MODULE_0___default.a.find(this.users, {
+        id: userId
       });
     }
   }
@@ -65145,7 +65169,17 @@ var render = function() {
                     _vm._v(_vm._s(user.name))
                   ]),
                   _vm._v(" "),
-                  _vm._m(1, true)
+                  _c("div", { staticClass: "status" }, [
+                    _vm.onlineUser(user.id)
+                      ? _c("p", [
+                          _c("i", { staticClass: "fa fa-circle online" }),
+                          _vm._v("online\n                            ")
+                        ])
+                      : _c("p", [
+                          _c("i", { staticClass: "fa fa-circle" }),
+                          _vm._v(" offline\n                            ")
+                        ])
+                  ])
                 ])
               ]
             )
@@ -65396,15 +65430,6 @@ var staticRenderFns = [
       _c("input", { attrs: { type: "text", placeholder: "search" } }),
       _vm._v(" "),
       _c("i", { staticClass: "fa fa-search" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "status" }, [
-      _c("i", { staticClass: "fa fa-circle online" }),
-      _vm._v(" online\n                        ")
     ])
   }
 ]

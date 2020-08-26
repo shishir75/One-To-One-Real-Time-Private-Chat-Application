@@ -25,3 +25,7 @@ Broadcast::channel( 'chat.{id}', function ( $user, $id ) {
 Broadcast::channel( 'typing_event', function ( $user ) {
     return Auth::check();
 } );
+
+Broadcast::channel( 'live-status', function ( $user ) {
+    return $user;
+} );
