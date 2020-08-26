@@ -16,6 +16,9 @@ import filter from "./filter";
 import VueChatScroll from "vue-chat-scroll";
 Vue.use(VueChatScroll);
 
+import Notifications from "vue-notification";
+Vue.use(Notifications);
+
 const app = new Vue({
     el: "#app",
     store
