@@ -1,8 +1,8 @@
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
-# One To One Private Chat using Laravel, Vuejs & Laravel WebSockets
+# One To One Private Chat using Laravel 7, Vue.js (with VueX) & WebSockets
 
-##Key Features:
+## Key Features:
 
 ** Realtime time message send and receive
 ** Delete Particular Message or all message for specific user
