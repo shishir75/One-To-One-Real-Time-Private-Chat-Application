@@ -159,6 +159,11 @@ export default {
         };
     },
     mounted() {
+        // auth_user comes from app.blade.php files scrept
+        Echo.private(`chat.${auth_user.id}`).listen("MessageSendEvent", e => {
+            this.selectUser(e.messages.from);
+            // console.log(e);
+        });
         this.$store.dispatch("userList"); // hit an actions
     },
     computed: {

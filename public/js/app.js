@@ -2068,6 +2068,13 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
+    var _this = this;
+
+    // auth_user comes from app.blade.php files scrept
+    Echo["private"]("chat.".concat(auth_user.id)).listen("MessageSendEvent", function (e) {
+      _this.selectUser(e.messages.from); // console.log(e);
+
+    });
     this.$store.dispatch("userList"); // hit an actions
   },
   computed: {
@@ -2084,7 +2091,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("userMessage", userId); // hit an actions
     },
     sendMessage: function sendMessage(e) {
-      var _this = this;
+      var _this2 = this;
 
       e.preventDefault();
 
@@ -2093,24 +2100,24 @@ __webpack_require__.r(__webpack_exports__);
           message: this.message,
           user_id: this.userMessages.user.id
         }).then(function (response) {
-          _this.selectUser(_this.userMessages.user.id);
+          _this2.selectUser(_this2.userMessages.user.id);
 
-          _this.message = "";
+          _this2.message = "";
         });
       }
     },
     deleteSingleMessage: function deleteSingleMessage(message_id) {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get("/delete-single-message/".concat(message_id)).then(function (response) {
-        _this2.selectUser(_this2.userMessages.user.id);
+        _this3.selectUser(_this3.userMessages.user.id);
       });
     },
     deleteAllMessage: function deleteAllMessage() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get("/delete-all-message/".concat(this.userMessages.user.id)).then(function (response) {
-        _this3.selectUser(_this3.userMessages.user.id);
+        _this4.selectUser(_this4.userMessages.user.id);
       });
     }
   }
