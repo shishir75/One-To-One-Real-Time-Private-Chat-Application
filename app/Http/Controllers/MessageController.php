@@ -73,18 +73,17 @@ class MessageController extends Controller
         return response( 'Deleted', 200 );
     }
 
-    public function delete_all_message( $id )
+    public function delete_all_message( $user_id )
     {
         if ( !Request::ajax() ) {
             return abort( 404 );
         }
-        $messages = $this->message_by_user_id( $id );
+        $messages = $this->message_by_user_id( $user_id );
         foreach ( $messages as $message ) {
             Message::findOrFail( $message->id )->delete();
         }
 
         return response()->json( 'All Message Deleted', 200 );
-
     }
 
     public function message_by_user_id( $id )
