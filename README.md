@@ -2,7 +2,7 @@
 
 # One To One Private Chat using Laravel, Vuejs & Laravel WebSockets
 
-##Here are the things you will learn in this series:
+##Key Features:
 
 ** Realtime time message send and receive
 ** Delete Particular Message or all message for specific user
@@ -10,13 +10,13 @@
 ** Status of Online User
 
 -   How to use Larvel Echo
--   How to use web Socket for realtime message
+-   How to use Web Socket for Realtime Message
 -   How to use SCSS
--   How to Use Vue filter
--   How use Vuex with Laravel (Used for state management)
+-   How to Use Vue Filter
+-   How use VueX with Laravel (Used for State Management)
 -   Relational Database with Laravel (Used for Maintainance DB)
--   Axios and Ajax Request (Passing request for fetch and crud operation)
--   How to Use Moment js on Laravel (Used for formating date time)
+-   Axios and Ajax Request (Passing request for fetch and CURD operation)
+-   How to Use Moment js on Laravel (Used for formatting date time)
 -   How to Use lodash
 -   And much more...
 
@@ -28,6 +28,6 @@
   <li> Run php artisan key:generate</li>
   <li> Run php artisan migrate</li>
   <li> Run npm install</li>
-   <li>Run npm run dev</li>
-<b>That's it - load the homepage.</b>
+   <li>Run npm run watch</li>
+<b>You are Done! </b>
 </article>
