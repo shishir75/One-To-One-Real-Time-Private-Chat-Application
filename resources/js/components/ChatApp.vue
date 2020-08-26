@@ -205,9 +205,20 @@ export default {
             })
             .joining(user => {
                 this.users.push(user);
+                Vue.notify({
+                    group: "foo",
+                    title: "Online",
+                    text: user.name + " just online."
+                });
             })
             .leaving(user => {
                 this.users.pop(user);
+                Vue.notify({
+                    group: "foo",
+                    title: "Offline",
+                    type: "warn",
+                    text: user.name + " just offline."
+                });
             });
     },
     methods: {

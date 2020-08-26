@@ -2114,8 +2114,21 @@ __webpack_require__.r(__webpack_exports__);
       _this2.users = users;
     }).joining(function (user) {
       _this2.users.push(user);
+
+      Vue.notify({
+        group: "foo",
+        title: "Online",
+        text: user.name + " just online."
+      });
     }).leaving(function (user) {
       _this2.users.pop(user);
+
+      Vue.notify({
+        group: "foo",
+        title: "Offline",
+        type: "warn",
+        text: user.name + " just offline."
+      });
     });
   },
   methods: {
